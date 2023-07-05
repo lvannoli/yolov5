@@ -29,16 +29,19 @@ class Albumentations:
             check_version(A.__version__, '1.0.3', hard=True)  # version requirement
 
             T = [
-                A.RandomResizedCrop(height=size, width=size, scale=(0.8, 1.0), ratio=(0.9, 1.11), p=0.0),
-                A.Blur(p=0.01),
-                A.MedianBlur(p=0.01),
-                A.ToGray(p=0.01),
-                A.CLAHE(p=0.01),
-                A.RandomBrightnessContrast(p=0.0),
+           		A.RandomResizedCrop(height=size, width=size, scale=(0.8, 1.0), ratio=(0.9, 1.11), p=0.0),
+                A.Blur(p=0.05),
+                A.MedianBlur(p=0.05),
+                A.ToGray(p=0.05),
+                A.CLAHE(p=0.05),
+                A.RandomBrightnessContrast(p=0.05),
                 A.RandomGamma(p=0.0),
+                A.Rotate(limit=360, p=0.05),
+                A.HorizontalFlip(p=0.05),
+                A.WarpAffine(p=0.05),
+                A.ElasticTransform(p=0.05),
                 A.ImageCompression(quality_lower=75, p=0.0)]  # transforms
             self.transform = A.Compose(T, bbox_params=A.BboxParams(format='yolo', label_fields=['class_labels']))
-
             LOGGER.info(prefix + ', '.join(f'{x}'.replace('always_apply=False, ', '') for x in T if x.p))
         except ImportError:  # package not installed, skip
             pass
